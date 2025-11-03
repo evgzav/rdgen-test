@@ -1,0 +1,21 @@
+name: Check GENURL
+
+on:
+  workflow_dispatch:  # Можно запускать вручную
+
+jobs:
+  check-genurl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print GENURL
+        run: |
+          echo "GENURL is set to: '${{ secrets.GENURL }}'"
+
+      - name: Check if GENURL is reachable
+        run: |
+          if curl --head --fail --max-time 10 "${{ secrets.GENURL }}" >/dev/null 2>&1; then
+            echo "✅ GENURL is reachable!"
+          else
+            echo "❌ GENURL is NOT reachable!"
+            exit 1
+          fi
